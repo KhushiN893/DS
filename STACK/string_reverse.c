@@ -22,7 +22,7 @@ int main()
     gets(str);
     for (int i = 0; i < strlen(str); i++)
         push(str[i]);
-
+    printf("Reversed String : ");
     for (int i = 0; i < strlen(str); i++)
         printf("%c", pop());
     return 0;
