@@ -50,7 +50,6 @@ int main()
                 printf("%c", pop());
             push(ex);
         }
-        ex++;
     }
     while (top != -1)
         printf("%c", pop());
