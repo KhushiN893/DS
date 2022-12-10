@@ -1,54 +1,61 @@
 #include <stdio.h>
-#include <string.h>
-int stack[20];
+#include <ctype.h>
+int stack[40];
 int top = -1;
+int temp = 0;
 int pop()
 {
-    if (top == -1)
-        return -1;
-    else
-        return stack[top--];
+    return stack[top--];
+}
+int push(int data)
+{
+    if (temp == 1)
+    {
+        int num;
+        num = pop();
+        stack[++top] = data + 10 * num;
+    }
+    else if (temp == 0)
+    {
+        stack[++top] = data;
+        temp = 1;
+    }
 }
 
-void push(int oper)
-{
-    stack[++top] = oper;
-}
 int main()
 {
-    char experssion[20];
-    char ex, x;
-    printf("Enter Infix Expression : ");
-    scanf("%s", experssion);
-    for (int i = 0; i < strlen(experssion); i++)
+    char expression[50];
+    char ch;
+    int i = 0;
+    printf("Enter the Postfix Expression(include space after each operator and operand) :");
+    fgets(expression, 100, stdin);
+    while ((ch = expression[i++]) != '\n')
     {
-        ex = experssion[i];
-        if (ex == '+' || ex == '-' || ex == '*' || ex == '/' || ex == '^')
-        {
-            int val1 = pop();
-            int val2 = pop();
-            switch (ex)
-            {
-            case '+':
-                push(val2 + val1);
-                break;
-            case '-':
-                push(val2 - val1);
-                break;
-            case '*':
-                push(val2 * val1);
-                break;
-            case '/':
-                push(val2 / val1);
-                break;
-            case '^':
-                push(val2 / val1);
-                break;
-            }
-        }
+        if (isdigit(ch))
+            push(ch - 48);
+        else if (ch == ' ')
+            temp = 0;
         else
-            push(ex - 48); // ascii value of number is number+48
+        {
+            temp = 0;
+            int num2 = pop();
+            int num1 = pop();
+            if (ch == '+')
+                push(num1 + num2);
+            else if (ch == '-')
+                push(num1 - num2);
+            else if (ch == '*')
+                push(num1 * num2);
+            else if (ch == '/')
+                push(num1 / num2);
+            else if (ch == '%')
+                push(num1 % num2);
+            else if (ch == '^')
+                push(num1 ^ num2);
+            else
+                printf("Sorry Invalid Choice!");
+        }
     }
-    printf("%d", pop());
-    return 0;
+
+    printf("Result: %d\n", stack[top]);
 }
